@@ -1,5 +1,6 @@
 {
-    "framework": "Other",
+    "version": 2,
+    "framework": null,
     "buildCommand": "pnpm run build",
     "installCommand": "pnpm install",
     "outputDirectory": "dist"
