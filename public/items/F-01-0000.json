@@ -1,0 +1,8 @@
+{
+    "id": "F-01-0000",
+    "name": "Simple Chair",
+    "description": "An unremarkable chair fashioned from engineered wood.",
+    "imageUrl": "/public/assets/images/basic-shot-64x64.png",
+    "meshUrl": "/public/assets/glb/simple-chair.glb",
+    "pattern": [ true ]
+}

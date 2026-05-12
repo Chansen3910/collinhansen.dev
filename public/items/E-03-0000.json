@@ -1,0 +1,8 @@
+{
+    "id": "E-03-0000",
+    "name": "Cedar Beanie",
+    "equipSlot": "headSlot",
+    "description": "A cedar red hat for the impoverished commonfolk.",
+    "imageUrl": "/public/assets/images/basic-shot-64x64.png",
+    "wornMeshUrl": "/public/assets/glb/hat.glb"
+}

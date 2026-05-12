@@ -1,0 +1,8 @@
+{
+    "id": "E-01-0000",
+    "name": "Blue Collared Shirt",
+    "equipSlot": "bodySlot",
+    "description": "A simple button-up long-sleeved shirt with collar.",
+    "imageUrl": "/public/assets/images/basic-shot-64x64.png",
+    "wornMeshUrl": "/public/assets/glb/shirt.glb"
+}

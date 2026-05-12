@@ -1,0 +1,8 @@
+{
+    "id": "E-02-0000",
+    "name": "Black Joggers",
+    "equipSlot": "legsSlot",
+    "description": "A pair of black twill jogging pants.",
+    "imageUrl": "/public/assets/images/basic-shot-64x64.png",
+    "wornMeshUrl": "/public/assets/glb/pants.glb"
+}
