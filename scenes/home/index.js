@@ -94,8 +94,50 @@ async function sc() {
 
 
 
+    let mainDiv = document.createElement('div');
+    mainDiv.classList.add(`w-100`, `h-100`, `col`, `center`, `unselectable`);
+
+    let innerDiv = document.createElement('div');
+    innerDiv.style.paddingLeft = '20px';
+    innerDiv.style.paddingRight = '20px';
+    innerDiv.style.borderRadius = '12px';
+    innerDiv.style.backgroundColor = 'rgba(12, 12, 36, 0.7)';
+    innerDiv.classList.add(`col`, `center`, `between`);
+
+    let heading = document.createElement('h2');
+    heading.style.margin = '12px';
+    heading.textContent = 'Site Under Construction';
+
+    let paragraph = document.createElement('p');
+    paragraph.style.fontStyle = 'italic';
+    paragraph.style.width = '300px';
+    paragraph.style.overflowWrap = 'break-word';
+    paragraph.style.textAlign = 'center';
+    paragraph.innerHTML = 'The site is currently under development. Come back soon to check for updates.';
+
+    let button = document.createElement('input');
+    button.type = 'button';
+    button.style.padding = '3px 7px 3px 7px';
+    button.style.margin = '20px';
+    button.style.minWidth = '70px';
+    button.style.textAlign = 'center';
+    button.style.fontWeight = 'bold';
+    button.classList.add(`col`, `center`, `finger`);
+    button.value = 'Okay';
+    button.onclick = async function() {
+        mainDiv.remove();
+    }
+
+    innerDiv.appendChild(heading);
+    innerDiv.appendChild(paragraph);
+    innerDiv.appendChild(button);
+
+    mainDiv.appendChild(innerDiv);
+
+
+
     scene.onBeginRender = function() {
-        //uiElement.appendChild(document.createElement(`title-element`));
+        renderer.uiElement.appendChild(mainDiv);
     };
 
 
