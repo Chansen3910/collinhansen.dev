@@ -1,6 +1,6 @@
 # collinhansen.dev
 
-My personal website.
+My personal website. CI/CD via Vercel.
 
 ---
 

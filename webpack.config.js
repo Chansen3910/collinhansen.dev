@@ -63,7 +63,7 @@ module.exports = (env, argv) => {
                 patterns: [
                     {
                         from: 'public',
-                        to: 'assets',
+                        to: 'public',
                         noErrorOnMissing: true
                     }
                 ]
