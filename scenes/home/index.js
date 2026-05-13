@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { HDRLoader } from 'three/examples/jsm/loaders/HDRLoader.js';
 import { Renderer } from '/public/Renderer.js';
 
 
@@ -38,28 +37,7 @@ let skill_slot_1,
     skill_slot_3;
 let java,
     cpp,
-    cs,
-    js,
-    node;
-let docker,
-    kubernetes,
-    debian;
-let nginx,
-    haproxy;
-let sveltekit,
-    react,
-    angular,
-    springboot,
-    dotnet,
-    express,
-    uwebsockets;
-let postgresql,
-    redis,
-    cockroachdb,
-    mysql,
-    mariadb;
-let aws,
-    gcp;
+    cs;
 
 
 
@@ -73,25 +51,7 @@ function setCameraZ() {
     camera.position.z += 1;
 }
 
-function loadHDREnvironment(scene, path) {
-    const pmremGenerator = new THREE.PMREMGenerator( renderer.renderer );
-    const hdriLoader = new HDRLoader();
-    hdriLoader.load(path, function(texture) {
-        const envMap = pmremGenerator.fromEquirectangular(texture).texture;
-        scene.background = texture;
-        texture.dispose();
-        scene.environment = envMap;
-    });
-}
 
-let currentEnv = 0;
-let envs = [
-    `/public/assets/hdri/0-early-morning.hdr`,
-    `/public/assets/hdri/1-morning.hdr`,
-    `/public/assets/hdri/2-mid-day.hdr`,
-    `/public/assets/hdri/3-after-noon.hdr`,
-    `/public/assets/hdri/4-night.hdr`
-];
 
 async function sc() {
     let scene = new THREE.Scene();
@@ -245,7 +205,13 @@ async function sc() {
         }
 
         if(intersects[0].object.name == `pdf-link`) {
-            //alert(`new resume is coming soon!`);
+            const link = document.createElement('a');
+            link.href = "/public/assets/files/Collin_Hansen_Resume.pdf";
+            link.download = "Collin_Hansen_Resume.pdf";
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
         if(intersects[0].object.name == `call-link`) {
             location = 'tel:+14322716960';
