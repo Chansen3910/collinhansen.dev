@@ -26,12 +26,14 @@ async function sc() {
     const pmremGenerator = new THREE.PMREMGenerator( renderer.renderer );
     const hdriLoader = new HDRLoader();
     hdriLoader.load(`/public/assets/hdri/autumn_forest_04_1k.hdr`, function(texture) {
+        pmremGenerator.compileEquirectangularShader();
         const envMap = pmremGenerator.fromEquirectangular(texture).texture;
         texture.dispose();
+        pmremGenerator.dispose();
         scene.environment = envMap;
-    });    
+    });
 
-    scene.background = null;
+    scene.background = new THREE.Color(0.0, 0.0, 0.0, 1.0);
 
     let raquelle;
     let mixer;
@@ -71,7 +73,7 @@ async function sc() {
         if(active) {
             active = false;
             await renderer.endScene();
-            window.location.replace(`/brand/`);
+            window.location.href = `/brand`;
         }
     }
 
@@ -86,6 +88,22 @@ async function sc() {
         async function(gltf) {
             await gltf.scene.traverse(async function(child) {
                 child.frustumCulled = false;
+                if (child.isMesh) {
+        console.log(child.name, 'roughness:', child.material.roughness, 'metalness:', child.material.metalness);
+    }
+                if(child.isMesh) {
+                    child.material.precision = 'highp';
+                    child.material.needsUpdate = true;
+
+                    child.material.roughnessMap = null;
+                    child.material.metalnessMap = null;
+
+                    child.material.envMap = scene.environment;
+
+                    child.material.envMapIntensity = 1.0;
+
+                    console.log(child.material);
+                }
             });
             gltf.scene.animations = await gltf.animations;
         }
@@ -96,7 +114,6 @@ async function sc() {
         if(clip.name == `Idle`) mixer.clipAction(clip).play();
     });
 
-    //raquelle.rotation.y = Math.PI / 1.5;
     await scene.add(raquelle);
 
     await renderer.camera.position.set(raquelle.position.x + 0.8, raquelle.position.y + 0.5, raquelle.position.z);

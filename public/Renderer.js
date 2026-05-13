@@ -58,20 +58,18 @@ export class Renderer {
         //set up and configure the renderer.
         this.renderer = new THREE.WebGLRenderer({
             alpha: false,
-            antialias: true,
-            gammaInput: true,
-            gammaOutput: true
+            antialias: true
         });
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFShadowMap;
         this.renderer.toneMapping = THREE.ReinhardToneMapping;
-        this.renderer.toneMappingExposure = 2.3;
+        this.renderer.toneMappingExposure = 1.0;
         this.renderer.autoClear = true;
         this.renderer.autoClearColor = true;
         this.renderer.autoClearDepth = true;
         this.renderer.autoClearStencil = true;
         this.renderer.autoClearTarget = true;
-        //this.renderer.physicallyCorrectLights = true;
+        this.renderer.outputColorSpace = THREE.SRGBColorSpace;
         this.renderer.debug = false;
 
         //initialize the screen and renderer size and renderer resolution.
@@ -83,6 +81,7 @@ export class Renderer {
         CURRENT_SCENE_CONTROLS_REFERENCE.set(this.controls);
         CURRENT_SCENE_CAMERA_REFERENCE.set(this.camera);
         CURRENT_SCENE_RENDERER_REFERENCE.set(this);
+        this.onWindowResize();
     }
 
 
@@ -212,29 +211,10 @@ export class Renderer {
 
 
     onWindowResize(e) {
-        this.renderer.setSize(this.containerElement.offsetWidth, this.containerElement.offsetHeight);
         this.camera.aspect = this.containerElement.offsetWidth / this.containerElement.offsetHeight;
         this.camera.updateProjectionMatrix();
-        /*
-        //get the current computed style.
-        let style = getComputedStyle(this.screenElement);
-        //the aspectratio is a string, so we must split the string value using '/' as delimiter to receive a tuple of string integers.
-        let aspectRatio = style.aspectRatio.split(`/`);
-        //if the result is not two integers, we did not receive a valid aspect ratio value.
-        if(aspectRatio.length != 2) {
-            console.warn(`INVALID ASPECT RATIO. Reverting to 4 / 3.`);
-            aspectRatio = [ 4, 3 ];
-        }
-        //The width must be set as so; otherwise, the renderer DOM element will block the screen div from being shrunken back down from 100% width in Firefox.
-        //Get the min of the viewport and the screen element's rendered width.
-        //Set the width to the max of the min and the screen element's computed style min-width property.
-        let width = Math.max(Math.min(window.innerWidth, this.screenElement.clientWidth), parseInt(style.minWidth));
-        //Set the height in accordance with the screen element's computed style aspect ratio property, falling back to 4 / 3 aspect ratio.
-        let height = (width / aspectRatio[0]) * aspectRatio[1];
-        this.renderer.setSize(width, height);
-        this.camera.aspect = width / height;
-        this.camera.updateProjectionMatrix();
-        */
+        this.renderer.setSize(this.containerElement.offsetWidth, this.containerElement.offsetHeight);
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     }
 
 
