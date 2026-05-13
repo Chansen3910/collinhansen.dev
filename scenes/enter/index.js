@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import { HDRLoader } from 'three/examples/jsm/loaders/HDRLoader.js';
 import { Renderer } from '/public/Renderer.js';
 
+
+
 let containerElement = window.parent.document.getElementById(`container`);
 let debugElement = window.parent.document.getElementById(`debug`);
 let filterElement = window.parent.document.getElementById(`filter`);
@@ -72,7 +74,7 @@ async function sc() {
         if(active) {
             active = false;
             await renderer.endScene();
-            window.location.href = `/brand`;
+            window.location.href = `/home`;
         }
     }
 

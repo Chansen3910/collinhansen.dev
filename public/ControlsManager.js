@@ -22,7 +22,9 @@ export default class ControlsManager {
     #mouseDownCallbackReference;
     #mouseMoveCallbackReference;
     #mouseOutCallbackReference;
-    #touchCallbackReference;
+    #touchStartCallbackReference;
+    #touchMoveCallbackReference;
+    #touchEndCallbackReference;
     #wheelCallbackReference;
     #keyDownCallbackReference;
     #keyUpCallbackReference;
@@ -49,7 +51,9 @@ export default class ControlsManager {
         window.parent.document.addEventListener('mousedown', this.#mouseDownCallbackReference = this.onMouseDown.bind(this), false);
         window.parent.document.addEventListener('mousemove', this.#mouseMoveCallbackReference = this.onMouseMove.bind(this), false);
         window.parent.document.addEventListener('mouseout', this.#mouseOutCallbackReference = this.onMouseOut.bind(this), false);
-        window.parent.document.addEventListener('touch', this.#touchCallbackReference = this.onTouch.bind(this), false);
+        window.parent.document.addEventListener('touchstart', this.#touchStartCallbackReference = this.onTouchStart.bind(this), false);
+        window.parent.document.addEventListener('touchmove', this.#touchMoveCallbackReference = this.onTouchMove.bind(this), false);
+        window.parent.document.addEventListener('touchend', this.#touchEndCallbackReference = this.onTouchEnd.bind(this), false);
         window.parent.document.addEventListener('wheel', this.#wheelCallbackReference = this.onMouseWheel.bind(this), { passive: true });
         window.parent.document.addEventListener('keydown', this.#keyDownCallbackReference = this.onKeyDown.bind(this), false);
         window.parent.document.addEventListener('keyup', this.#keyUpCallbackReference = this.onKeyUp.bind(this), false);
@@ -72,12 +76,16 @@ export default class ControlsManager {
 
     //this function flushes all the exported functions called by controls.
     flush() {
+        console.log(`FLUSH`);
         //Set these functions to the default of accepting and returning the event parameter.
         this.setOnClick((e) => e);
         this.setOnMouseUp((e) => e);
         this.setOnMouseDown((e) => e);
         this.setOnMouseMove((e) => e);
         this.setOnMouseOut((e) => e);
+        this.setOnTouchStart((e) => e);
+        this.setOnTouchMove((e) => e);
+        this.setOnTouchEnd((e) => e);
         this.setOnWheelUp((e) => e);
         this.setOnWheelDown((e) => e);
         this.setUpdateOnPressed((e) => e);
@@ -104,8 +112,14 @@ export default class ControlsManager {
     setOnMouseOut(fxn) {
         this.mouseOut = fxn;
     }
-    setOnTouch(fxn) {
-        this.onTouch = fxn;
+    setOnTouchStart(fxn) {
+        this.touchStart = fxn;
+    }
+    setOnTouchMove(fxn) {
+        this.touchMove = fxn;
+    }
+    setOnTouchEnd(fxn) {
+        this.touchEnd = fxn;
     }
     setOnWheelUp(fxn) {
         this.wheelUp = fxn;
@@ -141,7 +155,9 @@ export default class ControlsManager {
     mouseDown(e) {}
     mouseMove(e) {}
     mouseOut(e) {}
-    touch(e) {}
+    touchStart(e) {}
+    touchMove(e) {}
+    touchEnd(e) {}
     wheelUp(e) {}
     wheelDown(e) {}
     resize(e) {}
@@ -174,39 +190,37 @@ export default class ControlsManager {
         if(!CURRENT_SCENE_IS_ACTIVE.get()) return;
         this.mouseOut(e);
     }
-    onTouch(e) {
+    onTouchStart(e) {
         if(!CURRENT_SCENE_IS_ACTIVE.get()) return;
-        this.touch(e);
+        this.touchStart(e);
+    }
+    onTouchMove(e) {
+        if(!CURRENT_SCENE_IS_ACTIVE.get()) return;
+        this.touchMove(e);
+    }
+    onTouchEnd(e) {
+        if(!CURRENT_SCENE_IS_ACTIVE.get()) return;
+        this.touchEnd(e);
     }
     onMouseWheel(e) {
         if(!CURRENT_SCENE_IS_ACTIVE.get()) return;
         (e.deltaY < 0)? (this.wheelUp(e)): (this.wheelDown(e));
     }
     onKeyUp(e) {
-        //e.preventDefault();
-        let keyFirstUp = false;
-
+        e.preventDefault();
         //If the key is currently pressed down (present in the keyStates set), remove it from the set (indicating that it is no longer pressed).
-        if(this.keyStates.has(`${e.keyCode}`)) {
-            this.keyStates.delete(`${e.keyCode}`);
-            keyFirstUp = true;
-        }
-
+        if(this.keyStates.has(`${e.keyCode}`)) this.keyStates.delete(`${e.keyCode}`);
+        
         //If there is a callback set to handle this particular keyUp event (on this key), call it; otherwise, defer the action to the nullishKey function of this context.
-        if(CURRENT_SCENE_IS_ACTIVE.get() && keyFirstUp) (this.keyUps[`${e.keyCode}`] ?? this.nullishKey)(e);
+        if(CURRENT_SCENE_IS_ACTIVE.get()) (this.keyUps[`${e.keyCode}`] ?? this.nullishKey)(e);
     }
     onKeyDown(e) {
-        //e.preventDefault();
-        let keyFirstDown = false;
-
+        e.preventDefault();
         //If the key is not present in the keyStates set (indicating that it is not pressed), add it to the set (indicating that it is being pressed).
-        if(!this.keyStates.has(`${e.keyCode}`)) {
-            this.keyStates.add(`${e.keyCode}`);
-            keyFirstDown = true;
-        }
-
+        if(!this.keyStates.has(`${e.keyCode}`)) this.keyStates.add(`${e.keyCode}`);
+        
         //If there is a callback set to handle this particular keyDown event (on this key), call it; otherwise, defer the action to the nullishKey function of this context.
-        if(CURRENT_SCENE_IS_ACTIVE.get() && keyFirstDown) (this.keyDowns[`${e.keyCode}`] ?? this.nullishKey)(e);
+        if(CURRENT_SCENE_IS_ACTIVE.get()) (this.keyDowns[`${e.keyCode}`] ?? this.nullishKey)(e);
     }
     onResize(e) {
         if(!CURRENT_SCENE_IS_ACTIVE.get()) return;
@@ -220,6 +234,7 @@ export default class ControlsManager {
             y: 0.5
         };
         this.rect = this.engine.canvasElement.getBoundingClientRect();
+        this.resize(e);
     }
     update() {
         if(!CURRENT_SCENE_IS_ACTIVE.get()) return;
@@ -231,7 +246,9 @@ export default class ControlsManager {
         window.parent.document.removeEventListener('mousedown', this.#mouseDownCallbackReference);
         window.parent.document.removeEventListener('mousemove', this.#mouseMoveCallbackReference);
         window.parent.document.removeEventListener('mouseout', this.#mouseOutCallbackReference);
-        window.parent.document.removeEventListener('touch', this.#touchCallbackReference);
+        window.parent.document.removeEventListener('touchstart', this.#touchStartCallbackReference);
+        window.parent.document.removeEventListener('touchmove', this.#touchMoveCallbackReference);
+        window.parent.document.removeEventListener('touchend', this.#touchEndCallbackReference);
         window.parent.document.removeEventListener('wheel', this.#wheelCallbackReference);
         window.parent.document.removeEventListener('keydown', this.#keyDownCallbackReference);
         window.parent.document.removeEventListener('keyup', this.#keyUpCallbackReference);
