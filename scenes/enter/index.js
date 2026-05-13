@@ -36,7 +36,6 @@ async function sc() {
     scene.background = new THREE.Color(0.0, 0.0, 0.0, 1.0);
 
     let lyre;
-    let mixer;
 
     //ui
     let mainDiv = document.createElement('div');
@@ -58,7 +57,7 @@ async function sc() {
     paragraph.style.width = '300px';
     paragraph.style.overflowWrap = 'break-word';
     paragraph.style.textAlign = 'center';
-    paragraph.innerHTML = 'This scene requires audio to play.<br /><br />Please ensure that you have control of your audio device before continuing.';
+    paragraph.innerHTML = 'This application requires audio permissions to play.<br /><br />Please ensure that you have control of your audio device before continuing.';
 
     let button = document.createElement('input');
     button.type = 'button';
@@ -121,15 +120,6 @@ async function sc() {
     lyre.rotation.z += 0.2;
     scene.update = function() {
         lyre.rotation.y -= (0.01 * Math.sin(i += 0.03)) + 0.03;
-
-        /*
-        renderer.camera.position.y = (0.5 * Math.sin(i += 0.05)) + 0.3;
-        renderer.camera.lookAt(
-            lyre.position.x,
-            lyre.position.y + 0.3,
-            lyre.position.z
-        );
-        //*/
     }
     
     scene.cleanup = async function() {
