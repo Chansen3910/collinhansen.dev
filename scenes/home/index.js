@@ -98,10 +98,8 @@ async function sc() {
     scene.name = `enter`;
     scene.transitionIn = `fadeIn`;
     scene.transitionOut = `fadeOut`;
+    scene.clock = true;
     let active = true;
-
-    loadHDREnvironment(scene, envs[currentEnv]);
-    //scene.background = new THREE.Color('rgb(7, 0, 30)');
 
 
 
