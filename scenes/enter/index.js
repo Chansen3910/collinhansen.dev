@@ -35,7 +35,7 @@ async function sc() {
 
     scene.background = new THREE.Color(0.0, 0.0, 0.0, 1.0);
 
-    let raquelle;
+    let lyre;
     let mixer;
 
     //ui
@@ -83,14 +83,12 @@ async function sc() {
 
     mainDiv.appendChild(innerDiv);
 
-    raquelle = await renderer.loadGlb(
-        '/public/assets/glb/raquelle.glb',
+    lyre = await renderer.loadGlb(
+        '/public/assets/glb/oak-lyre.glb',
         async function(gltf) {
             await gltf.scene.traverse(async function(child) {
                 child.frustumCulled = false;
-                if (child.isMesh) {
-        console.log(child.name, 'roughness:', child.material.roughness, 'metalness:', child.material.metalness);
-    }
+
                 if(child.isMesh) {
                     child.material.precision = 'highp';
                     child.material.needsUpdate = true;
@@ -108,16 +106,11 @@ async function sc() {
             gltf.scene.animations = await gltf.animations;
         }
     );
-    mixer = await new THREE.AnimationMixer(raquelle);
 
-    raquelle.animations.forEach(function(clip) {
-        if(clip.name == `Idle`) mixer.clipAction(clip).play();
-    });
+    await scene.add(lyre);
 
-    await scene.add(raquelle);
-
-    await renderer.camera.position.set(raquelle.position.x + 0.8, raquelle.position.y + 0.5, raquelle.position.z);
-    await renderer.camera.lookAt(raquelle.position.x, raquelle.position.y + 0.32, raquelle.position.z);
+    await renderer.camera.position.set(lyre.position.x + 1.5, lyre.position.y + 0.5, lyre.position.z);
+    await renderer.camera.lookAt(lyre.position.x, lyre.position.y, lyre.position.z);
 
     scene.onBeginRender = function() {
         containerElement.classList.add('stars');
@@ -125,15 +118,16 @@ async function sc() {
     }
 
     let i = 0.0;
+    lyre.rotation.z += 0.2;
     scene.update = function() {
-        if(mixer) mixer.update(0.03);
+        lyre.rotation.y -= (0.01 * Math.sin(i += 0.03)) + 0.03;
 
         /*
         renderer.camera.position.y = (0.5 * Math.sin(i += 0.05)) + 0.3;
         renderer.camera.lookAt(
-            raquelle.position.x,
-            raquelle.position.y + 0.3,
-            raquelle.position.z
+            lyre.position.x,
+            lyre.position.y + 0.3,
+            lyre.position.z
         );
         //*/
     }
