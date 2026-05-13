@@ -55,7 +55,7 @@ function setCameraZ() {
 
 async function sc() {
     let scene = new THREE.Scene();
-    scene.name = `enter`;
+    scene.name = `home`;
     scene.transitionIn = `fadeIn`;
     scene.transitionOut = `fadeOut`;
     scene.clock = true;
@@ -222,8 +222,8 @@ async function sc() {
         if(intersects[0].object.name == `email-link`) {
             location.href = `mailto:chansen3910@gmail.com?subject=${ ((new Date().getHours() < 12)? ('Good morning'): ('Good afternoon')) + ` Collin!` }&body=...`;
         }
-        if(intersects[0].object.name == `linkedin-link`) {
-            location.href = 'https://linkedin.com/in/collin-hansen-647478386/';
+        if(intersects[0].object.name == `slack-link`) {
+            location.href = 'https://join.slack.com/t/contactcollinhansen/shared_invite/zt-3xr0uv29z-x4iF9EVTp15pWs6rCpXWoQ';
         }
         if(intersects[0].object.name == `snapchat-link`) {
             location.href = 'https://www.snapchat.com/add/mmisterperfectt';
@@ -291,12 +291,12 @@ async function sc() {
                 containerElement.title = `Get in touch via email`;
                 containerElement.style.setProperty(`cursor`, `pointer`);
                 break;
-            case `linkedin-link`:
-                containerElement.title = `Go to my Linkedin profile`;
+            case `slack-link`:
+                containerElement.title = `Join my Slack channel`;
                 containerElement.style.setProperty(`cursor`, `pointer`);
                 break;
             case `snapchat-link`:
-                containerElement.title = `Message me on snapchat`;
+                containerElement.title = `Message me on Snapchat`;
                 containerElement.style.setProperty(`cursor`, `pointer`);
                 break;
             default:
