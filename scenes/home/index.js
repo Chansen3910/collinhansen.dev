@@ -1,5 +1,9 @@
 import * as THREE from 'three';
 import { Renderer } from '/public/Renderer.js';
+import {
+    CURRENT_SCENE_RENDERER_REFERENCE,
+    CURRENT_SCENE_IS_ACTIVE
+} from '/public/store.js';
 
 
 
@@ -12,7 +16,7 @@ let canvasElement = document.getElementById(`canvas`);
 
 
 let renderer = new Renderer(containerElement, debugElement, filterElement, uiElement, canvasElement);
-//CURRENT_SCENE_RENDERER_REFERENCE.set(renderer);
+CURRENT_SCENE_RENDERER_REFERENCE.set(renderer);
 let controls = renderer.controls;
 let camera = renderer.camera;
 
@@ -61,7 +65,6 @@ async function sc() {
     scene.transitionIn = `fadeIn`;
     scene.transitionOut = `fadeOut`;
     scene.clock = true;
-    let active = true;
 
 
 
@@ -191,6 +194,10 @@ async function sc() {
         camera.position.y -= 0.3;
     });
     controls.setOnClick(function() {
+        if(!CURRENT_SCENE_IS_ACTIVE.get()) {
+            return;
+        }
+
         raycaster.setFromCamera(
             new THREE.Vector2(controls.mouse.x, controls.mouse.y),
             camera
@@ -328,42 +335,45 @@ async function sc() {
         touchPrevY = touchNextY;
     });
     controls.setOnTouchEnd(function(e) {
+        if(!CURRENT_SCENE_IS_ACTIVE.get()) {
+            return;
+        }
+
         //
     });
 
     controls.setUpdateOnPressed(function() {
-        if(active) {
-            //escape
-            if(controls.keyStates.has(`27`)) {
-                
-            }
-            //w
-            if(controls.keyStates.has(`87`)) {
-                camera.position.z -= 0.1;
-            }
-            //s
-            if(controls.keyStates.has(`83`)) {
-                camera.position.z += 0.1;
-            }
-            //a
-            if(controls.keyStates.has(`65`)) {
-                
-            }
-            //d
-            if(controls.keyStates.has(`68`)) {
+        if(!CURRENT_SCENE_IS_ACTIVE.get()) {
+            return;
+        }
 
-            }
-            //shift
-            if(controls.keyStates.has(`16`)) {
-                
-            }
-            //space
-            if(controls.keyStates.has(`32`)) {
-                //
-            }
+        //escape
+        if(controls.keyStates.has(`27`)) {
+            
+        }
+        //w
+        if(controls.keyStates.has(`87`)) {
+            camera.position.z -= 0.1;
+        }
+        //s
+        if(controls.keyStates.has(`83`)) {
+            camera.position.z += 0.1;
+        }
+        //a
+        if(controls.keyStates.has(`65`)) {
+            
+        }
+        //d
+        if(controls.keyStates.has(`68`)) {
 
+        }
+        //shift
+        if(controls.keyStates.has(`16`)) {
+            
+        }
+        //space
+        if(controls.keyStates.has(`32`)) {
             //
-
         }
     });
 
