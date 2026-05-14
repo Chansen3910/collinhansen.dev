@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { Renderer } from '/public/Renderer.js';
 import {
     CURRENT_SCENE_RENDERER_REFERENCE,
+    CURRENT_GAME_EPOCH,
     CURRENT_SCENE_IS_ACTIVE
 } from '/public/store.js';
 
@@ -82,8 +83,8 @@ async function sc() {
                     if(child.name == `many-colors-scroller`) many_colors_scroller = child;
                     if(child.name == `projects-carousel-left`) projects_carousel_left = child;
                     if(child.name == `projects-carousel-right`) projects_carousel_right = child;
-                    if(child.name == `clock_big_hand`) clock_big_hand = child;
-                    if(child.name == `clock_little_hand`) clock_little_hand = child;
+                    if(child.name == `clock-big-hand`) clock_big_hand = child;
+                    if(child.name == `clock-little-hand`) clock_little_hand = child;
                     /*
                     child.material.side = THREE.DoubleSide;
                     child.geometry.computeBoundingBox();
@@ -128,6 +129,12 @@ async function sc() {
     await scene.add(tower);
 
     setCameraZ();
+
+    CURRENT_GAME_EPOCH.subscribe(function(value) {
+        console.log(value % 60);
+        clock_big_hand.rotation.z = (Math.PI / 30) * (-(value % 60));
+        clock_little_hand.rotation.z = (Math.PI / 6) * (-(value % 12));
+    });
 
 
 
