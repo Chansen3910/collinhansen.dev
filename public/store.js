@@ -43,7 +43,7 @@ export const CURRENT_SCENE_CLOCK = persistentAtom(
 
 export const CURRENT_GAME_EPOCH = persistentAtom(
     `CURRENT_GAME_EPOCH`,
-    0,
+    500,
     {
         encode: JSON.stringify,
         decode: JSON.parse,
