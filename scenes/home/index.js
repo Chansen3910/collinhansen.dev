@@ -1,8 +1,10 @@
 import * as THREE from 'three';
 import { Renderer } from '/public/Renderer.js';
+import { ScrollBarElement } from '/public/components/scroll-bar.js';
 import {
     CURRENT_SCENE_RENDERER_REFERENCE,
     CURRENT_GAME_EPOCH,
+    CURRENT_SCROLL_POSITION,
     CURRENT_SCENE_IS_ACTIVE
 } from '/public/store.js';
 
@@ -136,6 +138,11 @@ async function sc() {
         clock_little_hand.rotation.z = (Math.PI / 6) * (-(value % 720) / 60);
     });
 
+    renderer.camera.position.y = CURRENT_SCROLL_POSITION.get();
+    CURRENT_SCROLL_POSITION.subscribe(function(value) {
+        renderer.camera.position.y = -value;
+    });
+
 
 
     //skills logos
@@ -196,9 +203,15 @@ async function sc() {
     //controls
     controls.setOnWheelUp(function(e) {
         camera.position.y += 0.3;
+
+        let s = CURRENT_SCROLL_POSITION.get() - 0.3
+        CURRENT_SCROLL_POSITION.set(s);
     });
     controls.setOnWheelDown(function(e) {
         camera.position.y -= 0.3;
+
+        let s = CURRENT_SCROLL_POSITION.get() + 0.3;
+        CURRENT_SCROLL_POSITION.set(s);
     });
     controls.setOnClick(function() {
         if(!CURRENT_SCENE_IS_ACTIVE.get()) {
@@ -336,8 +349,14 @@ async function sc() {
         let deltaPixels = Math.abs(touchNextY - touchPrevY);
         if(touchNextY > touchPrevY) {
             camera.position.y += (deltaPixels * 0.02);
+
+            let s = CURRENT_SCROLL_POSITION.get() - (deltaPixels * 0.02);
+            CURRENT_SCROLL_POSITION.set(s);
         }else {
             camera.position.y -= (deltaPixels * 0.02);
+
+            let s = CURRENT_SCROLL_POSITION.get() + (deltaPixels * 0.02);
+            CURRENT_SCROLL_POSITION.set(s);
         }
         touchPrevY = touchNextY;
     });
@@ -386,16 +405,8 @@ async function sc() {
 
 
 
-    camera.lookAt(
-        tower.position.x,
-        tower.position.y,
-        tower.position.z
-    );
-
-
-
     scene.onBeginRender = function() {
-        renderer.uiElement.appendChild(document.createElement(`hud-element`));
+        renderer.uiElement.appendChild(document.createElement(`scroll-bar-element`));
     }
 
     let i = 0;

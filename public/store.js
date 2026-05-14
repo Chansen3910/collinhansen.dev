@@ -51,3 +51,14 @@ export const CURRENT_GAME_EPOCH = persistentAtom(
         listen: false
     }
 );
+
+export const CURRENT_SCROLL_POSITION = persistentAtom(
+    `CURRENT_SCROLL_POSITION`,
+    0,
+    {
+        encode: JSON.stringify,
+        decode: JSON.parse,
+        storage: localStorage,
+        listen: false
+    }
+);
