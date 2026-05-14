@@ -30,7 +30,9 @@ let projects_carousel_left,
     projects_carousel_right;
 let projectsArmature,
     projectsFinalPosition = 0.0;
-const CAROUSEL_ROTATION_SPEED = 0.2;
+let clock_little_hand,
+    clock_big_hand;
+const CAROUSEL_ROTATION_SPEED = 0.07;
 
 let skill_slot_1,
     skill_slot_2,
@@ -77,7 +79,8 @@ async function sc() {
                     if(child.name == `many-colors-scroller`) many_colors_scroller = child;
                     if(child.name == `projects-carousel-left`) projects_carousel_left = child;
                     if(child.name == `projects-carousel-right`) projects_carousel_right = child;
-                    //console.log(child.name);
+                    if(child.name == `clock_big_hand`) clock_big_hand = child;
+                    if(child.name == `clock_little_hand`) clock_little_hand = child;
                     /*
                     child.material.side = THREE.DoubleSide;
                     child.geometry.computeBoundingBox();
