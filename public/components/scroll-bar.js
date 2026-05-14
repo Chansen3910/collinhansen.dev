@@ -10,12 +10,14 @@ export class ScrollBarElement extends LitElement {
     static styles = css`
         :host {
             display: block;
+            width: fit-content;
+            height: 100%;
         }
 
         .track {
             position: relative;
-            width: 12px;
-            height: 300px;
+            width: 30px;
+            height: 100%;
             background: #222;
             border-radius: 6px;
             cursor: pointer;
@@ -23,7 +25,7 @@ export class ScrollBarElement extends LitElement {
 
         .thumb {
             position: absolute;
-            width: 12px;
+            width: 30px;
             height: 40px;
             background: #888;
             border-radius: 6px;
@@ -67,9 +69,14 @@ export class ScrollBarElement extends LitElement {
         window.removeEventListener('mouseup', this._onMouseUp);
     }
 
+    _getTrackHeight() {
+        const track = this.shadowRoot?.querySelector('.track');
+        return track ? track.getBoundingClientRect().height : 300;
+    }
+
     _getThumbTop() {
         const { MIN, MAX } = ScrollBarElement;
-        const trackHeight = 300;
+        const trackHeight = this._getTrackHeight();
         const thumbHeight = 40;
         const travelHeight = trackHeight - thumbHeight;
         const ratio = (this.currentScrollPosition - MIN) / (MAX - MIN);
@@ -84,10 +91,10 @@ export class ScrollBarElement extends LitElement {
     }
 
     _handleMouseMove(e) {
-        if(!this._dragging) return;
+        if (!this._dragging) return;
 
         const { MIN, MAX } = ScrollBarElement;
-        const trackHeight = 300;
+        const trackHeight = this._getTrackHeight();
         const thumbHeight = 40;
         const travelHeight = trackHeight - thumbHeight;
 
@@ -103,10 +110,10 @@ export class ScrollBarElement extends LitElement {
     }
 
     _handleTrackClick(e) {
-        if(e.target == this.shadowRoot.querySelector('.thumb')) return;
+        if (e.target === this.shadowRoot.querySelector('.thumb')) return;
 
         const { MIN, MAX } = ScrollBarElement;
-        const trackHeight = 300;
+        const trackHeight = this._getTrackHeight();
         const thumbHeight = 40;
         const travelHeight = trackHeight - thumbHeight;
 
