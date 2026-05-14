@@ -133,7 +133,7 @@ async function sc() {
     CURRENT_GAME_EPOCH.subscribe(function(value) {
         console.log(value % 60);
         clock_big_hand.rotation.z = (Math.PI / 30) * (-(value % 60));
-        clock_little_hand.rotation.z = (Math.PI / 6) * (-(value % 12));
+        clock_little_hand.rotation.z = (Math.PI / 6) * (-(value % 720) / 60);
     });
 
 
