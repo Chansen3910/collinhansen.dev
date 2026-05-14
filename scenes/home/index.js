@@ -233,7 +233,63 @@ async function sc() {
         if(intersects[0].object.name == `projects-carousel-left`) {
             projectsFinalPosition += (2 * (Math.PI / 7));
         }
+        switch(intersects[0].object.name) {
+            case `newtube-card`:
+            case `study-buddy-card`:
+            case `real-life-card`:
+            case `air-assault-card`:
+            case `online-adventures-card`:
+            case `snake-3d-card`:
+            case `anthony-ant-card`:
+                /*
+                let mainDiv = document.createElement('div');
+                mainDiv.classList.add(`w-100`, `h-100`, `col`, `center`, `unselectable`);
 
+                let innerDiv = document.createElement('div');
+                innerDiv.style.paddingLeft = '20px';
+                innerDiv.style.paddingRight = '20px';
+                innerDiv.style.borderRadius = '12px';
+                innerDiv.style.backgroundColor = 'rgba(12, 12, 36, 0.7)';
+                innerDiv.classList.add(`col`, `center`, `between`);
+
+                let heading = document.createElement('h2');
+                heading.style.margin = '12px';
+                heading.textContent = 'Coming soon';
+
+                let paragraph = document.createElement('p');
+                paragraph.style.fontStyle = 'italic';
+                paragraph.style.width = '300px';
+                paragraph.style.overflowWrap = 'break-word';
+                paragraph.style.textAlign = 'center';
+                paragraph.innerHTML = 'I previously wiped my entire GitHub account.<br /><br />The live applications no longer exist, but will be returning shortly. Thank you for your patience as I rebuild my online presence.';
+
+                let button = document.createElement('input');
+                button.type = 'button';
+                button.style.padding = '3px 7px 3px 7px';
+                button.style.margin = '20px';
+                button.style.minWidth = '70px';
+                button.style.textAlign = 'center';
+                button.style.fontWeight = 'bold';
+                button.classList.add(`col`, `center`, `finger`);
+                button.value = 'OK';
+                button.onclick = async function(e) {
+                    e.preventDefault();
+                    console.log("REMOVE");
+                    this.remove();
+                }
+
+                innerDiv.appendChild(heading);
+                innerDiv.appendChild(paragraph);
+                innerDiv.appendChild(button);
+
+                mainDiv.appendChild(innerDiv);
+
+                document.getElementById("debug").appendChild(mainDiv);
+                */
+                alert("I previously wiped my entire GitHub account. The live applications no longer exist, but will be returning shortly. Thank you for your patience as I rebuild my online presence.");
+            break;
+            default:
+        }
         if(intersects[0].object.name == `pdf-link`) {
             const link = document.createElement('a');
             link.href = "/public/assets/files/Collin_Hansen_Resume.pdf";
