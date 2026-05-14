@@ -406,7 +406,13 @@ async function sc() {
 
 
     scene.onBeginRender = function() {
-        renderer.uiElement.appendChild(document.createElement(`scroll-bar-element`));
+        let mainDiv = document.createElement(`div`);
+        mainDiv.classList.add("w-100", "h-100", "row", "center", "between");
+
+        mainDiv.appendChild(document.createElement(`div`));
+        mainDiv.appendChild(document.createElement(`scroll-bar-element`));
+
+        renderer.uiElement.appendChild(mainDiv);
     }
 
     let i = 0;
