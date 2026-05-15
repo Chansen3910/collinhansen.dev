@@ -214,6 +214,47 @@ async function sc() {
         let s = CURRENT_SCROLL_POSITION.get() + 0.3;
         CURRENT_SCROLL_POSITION.set(s);
     });
+
+    let comingSoonToast = function() {
+        let toast = document.createElement("notification-toast");
+        toast.setAttribute("box-title", "Coming soon!");
+        toast.setAttribute("box-message", "I previously wiped my entire GitHub account. The live applications no longer exist, but will be returning shortly.<br /><br />Thank you for your patience as I rebuild my online presence.");
+        toast.setAttribute("button-value", "OK");
+        document.getElementById("ui").appendChild(toast);
+    }
+    const clickTargets = {
+        "projects-carousel-right": function() {
+            projectsFinalPosition -= (2 * (Math.PI / 7));
+        },
+        "projects-carousel-left": function() {
+            projectsFinalPosition += (2 * (Math.PI / 7));
+        },
+        "newtube-card": comingSoonToast,
+        "study-buddy-card": comingSoonToast,
+        "real-life-card": comingSoonToast,
+        "air-assault-card": comingSoonToast,
+        "online-adventures-card": comingSoonToast,
+        "snake-3d-card": comingSoonToast,
+        "anthony-ant-card": comingSoonToast,
+        "pdf-link": function() {
+            window.open("/public/assets/files/Collin_Hansen_Resume.pdf", "_blank");
+        },
+        "call-link": function() {
+            location = 'tel:+14322716960';
+        },
+        "message-link": function() {
+            location = `sms:+14322716960?body=${ ((new Date().getHours() < 12)? ('Good morning'): ('Good afternoon')) + ` Collin! My name is ...` }`;
+        },
+        "email-link": function() {
+            location.href = `mailto:chansen3910@gmail.com?subject=${ ((new Date().getHours() < 12)? ('Good morning'): ('Good afternoon')) + ` Collin!` }&body=...`;
+        },
+        "slack-link": function() {
+            location.href = 'https://join.slack.com/t/contactcollinhansen/shared_invite/zt-3xr0uv29z-x4iF9EVTp15pWs6rCpXWoQ';
+        },
+        "snapchat-link": function() {
+            location.href = 'https://www.snapchat.com/add/mmisterperfectt';
+        }
+    };
     controls.setOnClick(function(e) {
         e.stopPropagation();
         if(!CURRENT_SCENE_IS_ACTIVE.get()) {
@@ -229,52 +270,7 @@ async function sc() {
 
         //console.log(intersects[0].object.name);
 
-        if(intersects[0].object.name == `projects-carousel-right`) {
-            projectsFinalPosition -= (2 * (Math.PI / 7));
-        }
-        if(intersects[0].object.name == `projects-carousel-left`) {
-            projectsFinalPosition += (2 * (Math.PI / 7));
-        }
-        switch(intersects[0].object.name) {
-            case `newtube-card`:
-            case `study-buddy-card`:
-            case `real-life-card`:
-            case `air-assault-card`:
-            case `online-adventures-card`:
-            case `snake-3d-card`:
-            case `anthony-ant-card`:
-                let toast = document.createElement("notification-toast");
-                toast.setAttribute("box-title", "Coming soon!");
-                toast.setAttribute("box-message", "I previously wiped my entire GitHub account. The live applications no longer exist, but will be returning shortly.<br /><br />Thank you for your patience as I rebuild my online presence.");
-                toast.setAttribute("button-value", "OK");
-                document.getElementById("ui").appendChild(toast);
-            break;
-            default:
-        }
-        if(intersects[0].object.name == `pdf-link`) {
-            const link = document.createElement('a');
-            link.href = "/public/assets/files/Collin_Hansen_Resume.pdf";
-            link.download = "Collin_Hansen_Resume.pdf";
-            link.style.display = 'none';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-        if(intersects[0].object.name == `call-link`) {
-            location = 'tel:+14322716960';
-        }
-        if(intersects[0].object.name == `message-link`) {
-            location = `sms:+14322716960?body=${ ((new Date().getHours() < 12)? ('Good morning'): ('Good afternoon')) + ` Collin! My name is ...` }`;
-        }
-        if(intersects[0].object.name == `email-link`) {
-            location.href = `mailto:chansen3910@gmail.com?subject=${ ((new Date().getHours() < 12)? ('Good morning'): ('Good afternoon')) + ` Collin!` }&body=...`;
-        }
-        if(intersects[0].object.name == `slack-link`) {
-            location.href = 'https://join.slack.com/t/contactcollinhansen/shared_invite/zt-3xr0uv29z-x4iF9EVTp15pWs6rCpXWoQ';
-        }
-        if(intersects[0].object.name == `snapchat-link`) {
-            location.href = 'https://www.snapchat.com/add/mmisterperfectt';
-        }
+        clickTargets[ intersects[0].object.name ]();
     });
 
     controls.setOnMouseMove(function(e) {
