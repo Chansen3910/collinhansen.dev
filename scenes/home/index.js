@@ -215,6 +215,9 @@ async function sc() {
         CURRENT_SCROLL_POSITION.set(s);
     });
 
+    let clickDefault = function() {
+        //console.log("No valid click target!");
+    }
     let comingSoonToast = function() {
         let toast = document.createElement("notification-toast");
         toast.setAttribute("box-title", "Coming soon!");
@@ -270,7 +273,9 @@ async function sc() {
 
         //console.log(intersects[0].object.name);
 
-        clickTargets[ intersects[0].object.name ]();
+        let cb = clickTargets[ intersects[0].object.name ];
+        if(cb == null) clickDefault();
+        else cb();
     });
 
     let moveDefault = function() {
