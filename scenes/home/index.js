@@ -259,7 +259,6 @@ async function sc() {
         }
     };
     controls.setOnClick(function(e) {
-        console.log("SETONCLICK INDEX");
         e.stopPropagation();
         if(!CURRENT_SCENE_IS_ACTIVE.get()) {
             return;

@@ -197,34 +197,40 @@ export default class ControlsManager {
     }
     onTouchStart(e) {
         if(!CURRENT_SCENE_IS_ACTIVE.get()) return;
+
+        this.rect = this.engine.canvasElement.getBoundingClientRect();
+        this.lastMouse.x = this.lastTouch.x = e.touches[0].clientX;
+        this.lastMouse.y = this.lastTouch.y = e.touches[0].clientY;
+        this.mouse.x = ((this.lastMouse.x - this.rect.left) / this.rect.width) * 2 - 1;
+        this.mouse.y = ((this.lastMouse.y - this.rect.top) / this.rect.height) * -2 + 1;
+    
         this.touchStart(e);
-        this.lastTouch.x = e.touches[0].clientX;
-        this.lastTouch.y = e.touches[0].clientY;
     }
     onTouchMove(e) {
         if(!CURRENT_SCENE_IS_ACTIVE.get()) return;
-        this.lastMouse.x = e.changedTouches[0].clientX;
-        this.lastMouse.y = e.changedTouches[0].clientX;
+
+        this.lastMouse.x = this.lastTouch.x = e.changedTouches[0].clientX;
+        this.lastMouse.y = this.lastTouch.y = e.changedTouches[0].clientY;
         this.mouse.x = ((this.lastMouse.x - this.rect.left) / this.rect.width) * 2 - 1;
         this.mouse.y = ((this.lastMouse.y - this.rect.top) / this.rect.height) * -2 + 1;
+
         this.touchMove(e);
     }
     onTouchEnd(e) {
         if(!CURRENT_SCENE_IS_ACTIVE.get()) return;
-        this.touchEnd(e);
 
-        const endX = e.changedTouches[0].clientX;
-        const endY = e.changedTouches[0].clientY;
-        const dx = Math.abs(endX - this.lastTouch.x);
-        const dy = Math.abs(endY - this.lastTouch.y);
+        const dx = Math.abs(e.changedTouches[0].clientX - this.lastTouch.x);
+        const dy = Math.abs(e.changedTouches[0].clientY - this.lastTouch.y);
         if(dx < 10 && dy < 10) {
             e.preventDefault();
             this.lastMouse.x = this.lastTouch.x;
             this.lastMouse.y = this.lastTouch.y;
             this.mouse.x = ((this.lastMouse.x - this.rect.left) / this.rect.width) * 2 - 1;
             this.mouse.y = ((this.lastMouse.y - this.rect.top) / this.rect.height) * -2 + 1;
-            this.onClick(e);
+            e.target.click();
         }
+
+        this.touchEnd(e);
     }
     onMouseWheel(e) {
         if(!CURRENT_SCENE_IS_ACTIVE.get()) return;
@@ -249,6 +255,10 @@ export default class ControlsManager {
     onResize(e) {
         if(!CURRENT_SCENE_IS_ACTIVE.get()) return;
         //e.preventDefault();
+        this.lastTouch = {
+            x: 0.0,
+            y: 0.0
+        };
         this.lastMouse = {
             x: 0.0,
             y: 0.0

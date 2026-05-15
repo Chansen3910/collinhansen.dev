@@ -18,7 +18,7 @@ export class ScrollBarElement extends LitElement {
             position: relative;
             width: 30px;
             height: 100%;
-            background: #222;
+            background: rgba(0, 0, 0, 0.3);
             border-radius: 6px;
             cursor: pointer;
             overflow: hidden;
@@ -28,7 +28,7 @@ export class ScrollBarElement extends LitElement {
             position: absolute;
             width: 30px;
             height: 40px;
-            background: #888;
+            background: rgba(120, 120, 240, 1.0);
             border-radius: 6px;
             cursor: grab;
             transition: background 0.2s;
