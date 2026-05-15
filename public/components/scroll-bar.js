@@ -104,7 +104,7 @@ export class ScrollBarElement extends LitElement {
         const deltaPos = (deltaY / travelHeight) * (MAX - MIN);
         const newPos = Math.min(MAX, Math.max(MIN, this._dragStartPos + deltaPos));
 
-        CURRENT_SCROLL_POSITION.set(Math.round(newPos));
+        CURRENT_SCROLL_POSITION.set(newPos);
     }
 
     _handleMouseUp() {
