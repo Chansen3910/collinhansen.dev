@@ -21,6 +21,7 @@ export class ScrollBarElement extends LitElement {
             background: #222;
             border-radius: 6px;
             cursor: pointer;
+            overflow: hidden;
         }
 
         .thumb {
@@ -53,6 +54,7 @@ export class ScrollBarElement extends LitElement {
     connectedCallback() {
         super.connectedCallback();
 
+        this.currentScrollPosition = CURRENT_SCROLL_POSITION.get();
         this._unsubscribe_CURRENT_SCROLL_POSITION = CURRENT_SCROLL_POSITION.subscribe(function(value) {
             this.currentScrollPosition = value;
         }.bind(this));
@@ -129,12 +131,12 @@ export class ScrollBarElement extends LitElement {
         const thumbTop = this._getThumbTop();
 
         return html`
-            <div class="track" @click=${this._handleTrackClick}>
-                <div
-                    class="thumb"
-                    style="top: ${thumbTop}px"
-                    @mousedown=${this._handleMouseDown}
-                ></div>
+            <div class="track"
+                @click=${ this._handleTrackClick }>
+                <div class="thumb"
+                    style="top:${ thumbTop }px;"
+                    @mousedown=${ this._handleMouseDown }>
+                </div>
             </div>
         `;
     }
