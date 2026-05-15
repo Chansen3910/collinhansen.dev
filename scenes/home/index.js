@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { Renderer } from '/public/Renderer.js';
 import { ScrollBarElement } from '/public/components/scroll-bar.js';
+import { NotificationToast } from '/public/components/notification-toast.js';
 import {
     CURRENT_SCENE_RENDERER_REFERENCE,
     CURRENT_GAME_EPOCH,
@@ -213,7 +214,8 @@ async function sc() {
         let s = CURRENT_SCROLL_POSITION.get() + 0.3;
         CURRENT_SCROLL_POSITION.set(s);
     });
-    controls.setOnClick(function() {
+    controls.setOnClick(function(e) {
+        e.stopPropagation();
         if(!CURRENT_SCENE_IS_ACTIVE.get()) {
             return;
         }
@@ -241,52 +243,11 @@ async function sc() {
             case `online-adventures-card`:
             case `snake-3d-card`:
             case `anthony-ant-card`:
-                /*
-                let mainDiv = document.createElement('div');
-                mainDiv.classList.add(`w-100`, `h-100`, `col`, `center`, `unselectable`);
-
-                let innerDiv = document.createElement('div');
-                innerDiv.style.paddingLeft = '20px';
-                innerDiv.style.paddingRight = '20px';
-                innerDiv.style.borderRadius = '12px';
-                innerDiv.style.backgroundColor = 'rgba(12, 12, 36, 0.7)';
-                innerDiv.classList.add(`col`, `center`, `between`);
-
-                let heading = document.createElement('h2');
-                heading.style.margin = '12px';
-                heading.textContent = 'Coming soon';
-
-                let paragraph = document.createElement('p');
-                paragraph.style.fontStyle = 'italic';
-                paragraph.style.width = '300px';
-                paragraph.style.overflowWrap = 'break-word';
-                paragraph.style.textAlign = 'center';
-                paragraph.innerHTML = 'I previously wiped my entire GitHub account.<br /><br />The live applications no longer exist, but will be returning shortly. Thank you for your patience as I rebuild my online presence.';
-
-                let button = document.createElement('input');
-                button.type = 'button';
-                button.style.padding = '3px 7px 3px 7px';
-                button.style.margin = '20px';
-                button.style.minWidth = '70px';
-                button.style.textAlign = 'center';
-                button.style.fontWeight = 'bold';
-                button.classList.add(`col`, `center`, `finger`);
-                button.value = 'OK';
-                button.onclick = async function(e) {
-                    e.preventDefault();
-                    console.log("REMOVE");
-                    this.remove();
-                }
-
-                innerDiv.appendChild(heading);
-                innerDiv.appendChild(paragraph);
-                innerDiv.appendChild(button);
-
-                mainDiv.appendChild(innerDiv);
-
-                document.getElementById("debug").appendChild(mainDiv);
-                */
-                alert("I previously wiped my entire GitHub account. The live applications no longer exist, but will be returning shortly. Thank you for your patience as I rebuild my online presence.");
+                let toast = document.createElement("notification-toast");
+                toast.setAttribute("box-title", "Coming soon!");
+                toast.setAttribute("box-message", "I previously wiped my entire GitHub account. The live applications no longer exist, but will be returning shortly.<br /><br />Thank you for your patience as I rebuild my online presence.");
+                toast.setAttribute("button-value", "OK");
+                document.getElementById("ui").appendChild(toast);
             break;
             default:
         }
