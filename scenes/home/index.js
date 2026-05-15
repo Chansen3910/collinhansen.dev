@@ -273,6 +273,72 @@ async function sc() {
         clickTargets[ intersects[0].object.name ]();
     });
 
+    let moveDefault = function() {
+        containerElement.style.setProperty(`cursor`, `default`);
+        containerElement.title = ``;
+    }
+    const moveTargets = {
+        "projects-carousel-right": function() {
+            containerElement.title = `Send the carousel forward`;
+            containerElement.style.setProperty(`cursor`, `pointer`);
+        },
+        "projects-carousel-left": function() {
+            containerElement.title = `Send the carousel backward`;
+            containerElement.style.setProperty(`cursor`, `pointer`);
+        },
+        "newtube-card": function() {
+            containerElement.title = `Visit newtube.ch`;
+            containerElement.style.setProperty(`cursor`, `pointer`);
+        },
+        "study-buddy-card": function() {
+            containerElement.title = `Visit studybuddy.ch`;
+            containerElement.style.setProperty(`cursor`, `pointer`);
+        },
+        "real-life-card": function() {
+            containerElement.title = `Play the Real Life demo`;
+            containerElement.style.setProperty(`cursor`, `pointer`);
+        },
+        "air-assault-card": function() {
+            containerElement.title = `Play the Air Assault demo`;
+            containerElement.style.setProperty(`cursor`, `pointer`);
+        },
+        "online-adventures-card": function() {
+            containerElement.title = `Play Online Adventures`;
+            containerElement.style.setProperty(`cursor`, `pointer`);
+        },
+        "snake-3d-card": function() {
+            containerElement.title = `Play the Snake 3D demo`;
+            containerElement.style.setProperty(`cursor`, `pointer`);
+        },
+        "anthony-ant-card": function() {
+            containerElement.title = `Play the Anthony Ant demo`;
+            containerElement.style.setProperty(`cursor`, `pointer`);
+        },
+        "pdf-link": function() {
+            containerElement.title = `Download my resume as a pdf`;
+            containerElement.style.setProperty(`cursor`, `pointer`);
+        },
+        "call-link": function() {
+            containerElement.title = `Click to give me a ring`;
+            containerElement.style.setProperty(`cursor`, `pointer`);
+        },
+        "message-link": function() {
+            containerElement.title = `Click here to shoot me a text`;
+            containerElement.style.setProperty(`cursor`, `pointer`);
+        },
+        "email-link": function() {
+            containerElement.title = `Get in touch via email`;
+            containerElement.style.setProperty(`cursor`, `pointer`);
+        },
+        "slack-link": function() {
+            containerElement.title = `Join my Slack channel`;
+            containerElement.style.setProperty(`cursor`, `pointer`);
+        },
+        "snapchat-link": function() {
+            containerElement.title = `Message me on Snapchat`;
+            containerElement.style.setProperty(`cursor`, `pointer`);
+        }
+    };
     controls.setOnMouseMove(function(e) {
         raycaster.setFromCamera(
             new THREE.Vector2(controls.mouse.x, controls.mouse.y),
@@ -281,72 +347,9 @@ async function sc() {
         let intersects = raycaster.intersectObjects(tower.children, true);
         if(intersects.length == 0) return;
 
-        switch(intersects[0].object.name) {
-            case `projects-carousel-right`:
-                containerElement.title = `Send the carousel forward`;
-                containerElement.style.setProperty(`cursor`, `pointer`);
-                break;
-            case `projects-carousel-left`:
-                containerElement.title = `Send the carousel backward`;
-                containerElement.style.setProperty(`cursor`, `pointer`);
-                break;
-            case `newtube-card`:
-                containerElement.title = `Visit newtube.ch`;
-                containerElement.style.setProperty(`cursor`, `pointer`);
-                break;
-            case `study-buddy-card`:
-                containerElement.title = `Visit studybuddy.ch`;
-                containerElement.style.setProperty(`cursor`, `pointer`);
-                break;
-            case `real-life-card`:
-                containerElement.title = `Play the Real Life demo`;
-                containerElement.style.setProperty(`cursor`, `pointer`);
-                break;
-            case `air-assault-card`:
-                containerElement.title = `Play the Air Assault demo`;
-                containerElement.style.setProperty(`cursor`, `pointer`);
-                break;
-            case `online-adventures-card`:
-                containerElement.title = `Play Online Adventures`;
-                containerElement.style.setProperty(`cursor`, `pointer`);
-                break;
-            case `snake-3d-card`:
-                containerElement.title = `Play the Snake 3D demo`;
-                containerElement.style.setProperty(`cursor`, `pointer`);
-                break;
-            case `anthony-ant-card`:
-                containerElement.title = `Play the Anthony Ant demo`;
-                containerElement.style.setProperty(`cursor`, `pointer`);
-                break;
-            case `pdf-link`:
-                containerElement.title = `Download my resume as a pdf`;
-                containerElement.style.setProperty(`cursor`, `pointer`);
-                break;
-            case `call-link`:
-                containerElement.title = `Click to give me a ring`;
-                containerElement.style.setProperty(`cursor`, `pointer`);
-                break;
-            case `message-link`:
-                containerElement.title = `Click here to shoot me a text`;
-                containerElement.style.setProperty(`cursor`, `pointer`);
-                break;
-            case `email-link`:
-                containerElement.title = `Get in touch via email`;
-                containerElement.style.setProperty(`cursor`, `pointer`);
-                break;
-            case `slack-link`:
-                containerElement.title = `Join my Slack channel`;
-                containerElement.style.setProperty(`cursor`, `pointer`);
-                break;
-            case `snapchat-link`:
-                containerElement.title = `Message me on Snapchat`;
-                containerElement.style.setProperty(`cursor`, `pointer`);
-                break;
-            default:
-                containerElement.style.setProperty(`cursor`, `default`);
-                containerElement.title = ``;
-                break;
-        };
+        let cb = moveTargets[ intersects[0].object.name ];
+        if(cb == null) moveDefault();
+        else cb();
     });
 
     controls.setOnResize(function(e) {
