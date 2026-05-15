@@ -38,6 +38,7 @@ export default class ControlsManager {
     //idiosyncrasies and any possible inconsistent event loop implementations across browsers.
     keyStates = new Set();
 
+    lastTouch;
     lastMouse;
     mouse;
     rect;
@@ -59,6 +60,10 @@ export default class ControlsManager {
         window.parent.document.addEventListener('keyup', this.#keyUpCallbackReference = this.onKeyUp.bind(this), false);
         window.parent.addEventListener('resize', this.#resizeCallbackReference = this.onResize.bind(this), false);
 
+        this.lastTouch = {
+            x: 0.0,
+            y: 0.0
+        };
         this.lastMouse = {
             x: 0.0,
             y: 0.0
@@ -183,7 +188,7 @@ export default class ControlsManager {
         this.lastMouse.x = e.clientX;
         this.lastMouse.y = e.clientY;
         this.mouse.x = ((this.lastMouse.x - this.rect.left) / this.rect.width) * 2 - 1;
-        this.mouse.y = ((this.lastMouse.y - this.rect.top)  / this.rect.height) * -2 + 1;
+        this.mouse.y = ((this.lastMouse.y - this.rect.top) / this.rect.height) * -2 + 1;
         this.mouseMove(e);
     }
     onMouseOut(e) {
@@ -193,14 +198,33 @@ export default class ControlsManager {
     onTouchStart(e) {
         if(!CURRENT_SCENE_IS_ACTIVE.get()) return;
         this.touchStart(e);
+        this.lastTouch.x = e.touches[0].clientX;
+        this.lastTouch.y = e.touches[0].clientY;
     }
     onTouchMove(e) {
         if(!CURRENT_SCENE_IS_ACTIVE.get()) return;
+        this.lastMouse.x = e.changedTouches[0].clientX;
+        this.lastMouse.y = e.changedTouches[0].clientX;
+        this.mouse.x = ((this.lastMouse.x - this.rect.left) / this.rect.width) * 2 - 1;
+        this.mouse.y = ((this.lastMouse.y - this.rect.top) / this.rect.height) * -2 + 1;
         this.touchMove(e);
     }
     onTouchEnd(e) {
         if(!CURRENT_SCENE_IS_ACTIVE.get()) return;
         this.touchEnd(e);
+
+        const endX = e.changedTouches[0].clientX;
+        const endY = e.changedTouches[0].clientY;
+        const dx = Math.abs(endX - this.lastTouch.x);
+        const dy = Math.abs(endY - this.lastTouch.y);
+        if(dx < 10 && dy < 10) {
+            e.preventDefault();
+            this.lastMouse.x = this.lastTouch.x;
+            this.lastMouse.y = this.lastTouch.y;
+            this.mouse.x = ((this.lastMouse.x - this.rect.left) / this.rect.width) * 2 - 1;
+            this.mouse.y = ((this.lastMouse.y - this.rect.top) / this.rect.height) * -2 + 1;
+            this.onClick(e);
+        }
     }
     onMouseWheel(e) {
         if(!CURRENT_SCENE_IS_ACTIVE.get()) return;

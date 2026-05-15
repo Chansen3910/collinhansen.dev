@@ -259,6 +259,7 @@ async function sc() {
         }
     };
     controls.setOnClick(function(e) {
+        console.log("SETONCLICK INDEX");
         e.stopPropagation();
         if(!CURRENT_SCENE_IS_ACTIVE.get()) {
             return;
@@ -271,7 +272,7 @@ async function sc() {
         let intersects = raycaster.intersectObjects(tower.children, true);
         if(intersects.length == 0) return;
 
-        //console.log(intersects[0].object.name);
+        console.log(intersects[0].object.name);
 
         let cb = clickTargets[ intersects[0].object.name ];
         if(cb == null) clickDefault();

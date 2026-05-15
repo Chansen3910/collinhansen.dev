@@ -46,9 +46,9 @@ export class ScrollBarElement extends LitElement {
     constructor() {
         super();
         this.currentScrollPosition = CURRENT_SCROLL_POSITION.get();
-        this._dragging = false;
-        this._dragStartY = 0;
-        this._dragStartPos = 0;
+        this.dragging = false;
+        this.dragStartY = 0;
+        this.dragStartPos = 0;
     }
 
     connectedCallback() {
@@ -87,28 +87,28 @@ export class ScrollBarElement extends LitElement {
 
     _handleMouseDown(e) {
         e.preventDefault();
-        this._dragging = true;
-        this._dragStartY = e.clientY;
-        this._dragStartPos = this.currentScrollPosition;
+        this.dragging = true;
+        this.dragStartY = e.clientY;
+        this.dragStartPos = this.currentScrollPosition;
     }
 
     _handleMouseMove(e) {
-        if (!this._dragging) return;
+        if (!this.dragging) return;
 
         const { MIN, MAX } = ScrollBarElement;
         const trackHeight = this._getTrackHeight();
         const thumbHeight = 40;
         const travelHeight = trackHeight - thumbHeight;
 
-        const deltaY = e.clientY - this._dragStartY;
+        const deltaY = e.clientY - this.dragStartY;
         const deltaPos = (deltaY / travelHeight) * (MAX - MIN);
-        const newPos = Math.min(MAX, Math.max(MIN, this._dragStartPos + deltaPos));
+        const newPos = Math.min(MAX, Math.max(MIN, this.dragStartPos + deltaPos));
 
         CURRENT_SCROLL_POSITION.set(newPos);
     }
 
     _handleMouseUp() {
-        this._dragging = false;
+        this.dragging = false;
     }
 
     _handleTrackClick(e) {
