@@ -185,10 +185,13 @@ export default class ControlsManager {
     }
     onMouseMove(e) {
         if(!CURRENT_SCENE_IS_ACTIVE.get()) return;
+
+        this.rect = this.engine.canvasElement.getBoundingClientRect();
         this.lastMouse.x = e.clientX;
         this.lastMouse.y = e.clientY;
         this.mouse.x = ((this.lastMouse.x - this.rect.left) / this.rect.width) * 2 - 1;
         this.mouse.y = ((this.lastMouse.y - this.rect.top) / this.rect.height) * -2 + 1;
+
         this.mouseMove(e);
     }
     onMouseOut(e) {
@@ -209,6 +212,7 @@ export default class ControlsManager {
     onTouchMove(e) {
         if(!CURRENT_SCENE_IS_ACTIVE.get()) return;
 
+        this.rect = this.engine.canvasElement.getBoundingClientRect();
         this.lastMouse.x = this.lastTouch.x = e.changedTouches[0].clientX;
         this.lastMouse.y = this.lastTouch.y = e.changedTouches[0].clientY;
         this.mouse.x = ((this.lastMouse.x - this.rect.left) / this.rect.width) * 2 - 1;
@@ -219,6 +223,7 @@ export default class ControlsManager {
     onTouchEnd(e) {
         if(!CURRENT_SCENE_IS_ACTIVE.get()) return;
 
+        this.rect = this.engine.canvasElement.getBoundingClientRect();
         const dx = Math.abs(e.changedTouches[0].clientX - this.lastTouch.x);
         const dy = Math.abs(e.changedTouches[0].clientY - this.lastTouch.y);
         if(dx < 10 && dy < 10) {
