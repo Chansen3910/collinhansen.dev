@@ -140,7 +140,7 @@ export class ScrollBarElement extends LitElement {
 
         return html`
             <div class="track"
-                @click=${ this._handleTrackClick }>
+                @pointerdown=${ this._handleTrackClick }>
                 <div class="thumb"
                     style="top:${ thumbTop }px;"
                     @pointerdown=${ this._handleThumbPointerDown }>
