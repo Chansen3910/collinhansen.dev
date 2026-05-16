@@ -4,7 +4,8 @@ import { CURRENT_SCROLL_POSITION } from '/public/store.js';
 export class ScrollBarElement extends LitElement {
 
     static properties = {
-        currentScrollPosition: { type: Number }
+        currentScrollPosition: { type: Number },
+        trackHeight: { type: Number }
     };
 
     static styles = css`
@@ -29,7 +30,7 @@ export class ScrollBarElement extends LitElement {
             position: absolute;
             width: 30px;
             height: 40px;
-            background: rgba(120, 120, 240, 1.0);
+            background: rgba(200, 200, 200, 1.0);
             border-radius: 6px;
             cursor: grab;
             transition: background 0.2s;
@@ -38,7 +39,7 @@ export class ScrollBarElement extends LitElement {
 
         .thumb:active {
             cursor: grabbing;
-            background: #bbb;
+            background: rgba(240, 240, 240, 1.0);
         }
     `;
 
@@ -48,6 +49,7 @@ export class ScrollBarElement extends LitElement {
     constructor() {
         super();
         this.currentScrollPosition = CURRENT_SCROLL_POSITION.get();
+        this.trackHeight = 300;
         this.dragging = false;
         this.dragStartY = 0;
         this.dragStartPos = 0;
@@ -64,22 +66,23 @@ export class ScrollBarElement extends LitElement {
         }.bind(this));
     }
 
+    firstUpdated() {
+        const track = this.shadowRoot?.querySelector('.track');
+        if(track) {
+            this.trackHeight = track.getBoundingClientRect().height;
+        }
+    }
+
     disconnectedCallback() {
         this._unsubscribe_CURRENT_SCROLL_POSITION();
         window.removeEventListener('pointermove', this._handlePointerMove);
         window.removeEventListener('pointerup', this._handlePointerUp);
     }
 
-    _getTrackHeight() {
-        const track = this.shadowRoot?.querySelector('.track');
-        return track ? track.getBoundingClientRect().height : 300;
-    }
-
     _getThumbTop() {
         const { MIN, MAX } = ScrollBarElement;
-        const trackHeight = this._getTrackHeight();
         const thumbHeight = 40;
-        const travelHeight = trackHeight - thumbHeight;
+        const travelHeight = this.trackHeight - thumbHeight;
         const ratio = (this.currentScrollPosition - MIN) / (MAX - MIN);
         return ratio * travelHeight;
     }
@@ -100,9 +103,8 @@ export class ScrollBarElement extends LitElement {
         if(!this.dragging) return;
 
         const { MIN, MAX } = ScrollBarElement;
-        const trackHeight = this._getTrackHeight();
         const thumbHeight = 40;
-        const travelHeight = trackHeight - thumbHeight;
+        const travelHeight = this.trackHeight - thumbHeight;
 
         const deltaY = e.clientY - this.dragStartY;
         const deltaPos = (deltaY / travelHeight) * (MAX - MIN);
@@ -123,9 +125,8 @@ export class ScrollBarElement extends LitElement {
         if(e.target === this.shadowRoot.querySelector('.thumb')) return;
 
         const { MIN, MAX } = ScrollBarElement;
-        const trackHeight = this._getTrackHeight();
         const thumbHeight = 40;
-        const travelHeight = trackHeight - thumbHeight;
+        const travelHeight = this.trackHeight - thumbHeight;
 
         const trackRect = e.currentTarget.getBoundingClientRect();
         const clickY = e.clientY - trackRect.top - (thumbHeight / 2);
