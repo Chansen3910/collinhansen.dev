@@ -22,6 +22,7 @@ export class ScrollBarElement extends LitElement {
             border-radius: 6px;
             cursor: pointer;
             overflow: hidden;
+            touch-action: none; 
         }
 
         .thumb {
@@ -32,6 +33,7 @@ export class ScrollBarElement extends LitElement {
             border-radius: 6px;
             cursor: grab;
             transition: background 0.2s;
+            touch-action: none; 
         }
 
         .thumb:active {
@@ -49,6 +51,8 @@ export class ScrollBarElement extends LitElement {
         this.dragging = false;
         this.dragStartY = 0;
         this.dragStartPos = 0;
+        this._handlePointerMove = this._handlePointerMove.bind(this);
+        this._handlePointerUp = this._handlePointerUp.bind(this);
     }
 
     connectedCallback() {
@@ -58,17 +62,12 @@ export class ScrollBarElement extends LitElement {
         this._unsubscribe_CURRENT_SCROLL_POSITION = CURRENT_SCROLL_POSITION.subscribe(function(value) {
             this.currentScrollPosition = value;
         }.bind(this));
-
-        this._onMouseMove = this._handleMouseMove.bind(this);
-        this._onMouseUp = this._handleMouseUp.bind(this);
-        window.addEventListener('mousemove', this._onMouseMove);
-        window.addEventListener('mouseup', this._onMouseUp);
     }
 
     disconnectedCallback() {
         this._unsubscribe_CURRENT_SCROLL_POSITION();
-        window.removeEventListener('mousemove', this._onMouseMove);
-        window.removeEventListener('mouseup', this._onMouseUp);
+        window.removeEventListener('pointermove', this._handlePointerMove);
+        window.removeEventListener('pointerup', this._handlePointerUp);
     }
 
     _getTrackHeight() {
@@ -85,15 +84,20 @@ export class ScrollBarElement extends LitElement {
         return ratio * travelHeight;
     }
 
-    _handleMouseDown(e) {
-        e.preventDefault();
+    _handleThumbPointerDown(e) {
+        e.preventDefault(); 
+        e.target.setPointerCapture(e.pointerId);
+
         this.dragging = true;
         this.dragStartY = e.clientY;
         this.dragStartPos = this.currentScrollPosition;
+
+        window.addEventListener('pointermove', this._handlePointerMove);
+        window.addEventListener('pointerup', this._handlePointerUp);
     }
 
-    _handleMouseMove(e) {
-        if (!this.dragging) return;
+    _handlePointerMove(e) {
+        if(!this.dragging) return;
 
         const { MIN, MAX } = ScrollBarElement;
         const trackHeight = this._getTrackHeight();
@@ -107,12 +111,16 @@ export class ScrollBarElement extends LitElement {
         CURRENT_SCROLL_POSITION.set(newPos);
     }
 
-    _handleMouseUp() {
+    _handlePointerUp(e) {
+        if(!this.dragging) return;
+
         this.dragging = false;
+        window.removeEventListener('pointermove', this._handlePointerMove);
+        window.removeEventListener('pointerup', this._handlePointerUp);
     }
 
     _handleTrackClick(e) {
-        if (e.target === this.shadowRoot.querySelector('.thumb')) return;
+        if(e.target === this.shadowRoot.querySelector('.thumb')) return;
 
         const { MIN, MAX } = ScrollBarElement;
         const trackHeight = this._getTrackHeight();
@@ -135,7 +143,7 @@ export class ScrollBarElement extends LitElement {
                 @click=${ this._handleTrackClick }>
                 <div class="thumb"
                     style="top:${ thumbTop }px;"
-                    @mousedown=${ this._handleMouseDown }>
+                    @pointerdown=${ this._handleThumbPointerDown }>
                 </div>
             </div>
         `;
