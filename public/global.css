@@ -4,6 +4,7 @@
 }
 * {
     font-family: 'wb';
+    -webkit-tap-highlight-color: transparent;
 }
 
 html, body {

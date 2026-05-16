@@ -47,18 +47,18 @@ export default class ControlsManager {
         this.engine = engine;
 
         //add option, mousemove, drag, drop, etc
-        window.parent.document.addEventListener('click', this.#clickCallbackReference = this.onClick.bind(this), false);
-        window.parent.document.addEventListener('mouseup', this.#mouseUpCallbackReference = this.onMouseUp.bind(this), false);
-        window.parent.document.addEventListener('mousedown', this.#mouseDownCallbackReference = this.onMouseDown.bind(this), false);
-        window.parent.document.addEventListener('mousemove', this.#mouseMoveCallbackReference = this.onMouseMove.bind(this), false);
-        window.parent.document.addEventListener('mouseout', this.#mouseOutCallbackReference = this.onMouseOut.bind(this), false);
-        window.parent.document.addEventListener('touchstart', this.#touchStartCallbackReference = this.onTouchStart.bind(this), false);
-        window.parent.document.addEventListener('touchmove', this.#touchMoveCallbackReference = this.onTouchMove.bind(this), false);
-        window.parent.document.addEventListener('touchend', this.#touchEndCallbackReference = this.onTouchEnd.bind(this), false);
-        window.parent.document.addEventListener('wheel', this.#wheelCallbackReference = this.onMouseWheel.bind(this), { passive: true });
-        window.parent.document.addEventListener('keydown', this.#keyDownCallbackReference = this.onKeyDown.bind(this), false);
-        window.parent.document.addEventListener('keyup', this.#keyUpCallbackReference = this.onKeyUp.bind(this), false);
-        window.parent.addEventListener('resize', this.#resizeCallbackReference = this.onResize.bind(this), false);
+        window.document.addEventListener('click', this.#clickCallbackReference = this.onClick.bind(this), false);
+        window.document.addEventListener('mouseup', this.#mouseUpCallbackReference = this.onMouseUp.bind(this), false);
+        window.document.addEventListener('mousedown', this.#mouseDownCallbackReference = this.onMouseDown.bind(this), false);
+        window.document.addEventListener('mousemove', this.#mouseMoveCallbackReference = this.onMouseMove.bind(this), false);
+        window.document.addEventListener('mouseout', this.#mouseOutCallbackReference = this.onMouseOut.bind(this), false);
+        window.document.addEventListener('touchstart', this.#touchStartCallbackReference = this.onTouchStart.bind(this), false);
+        window.document.addEventListener('touchmove', this.#touchMoveCallbackReference = this.onTouchMove.bind(this), false);
+        window.document.addEventListener('touchend', this.#touchEndCallbackReference = this.onTouchEnd.bind(this), false);
+        window.document.addEventListener('wheel', this.#wheelCallbackReference = this.onMouseWheel.bind(this), { passive: true });
+        window.document.addEventListener('keydown', this.#keyDownCallbackReference = this.onKeyDown.bind(this), false);
+        window.document.addEventListener('keyup', this.#keyUpCallbackReference = this.onKeyUp.bind(this), false);
+        window.addEventListener('resize', this.#resizeCallbackReference = this.onResize.bind(this), false);
 
         this.lastTouch = {
             x: 0.0,
@@ -275,17 +275,17 @@ export default class ControlsManager {
         this.updateOnPressed();
     }
     destroy() {
-        window.parent.document.removeEventListener('click', this.#clickCallbackReference);
-        window.parent.document.removeEventListener('mouseup', this.#mouseUpCallbackReference);
-        window.parent.document.removeEventListener('mousedown', this.#mouseDownCallbackReference);
-        window.parent.document.removeEventListener('mousemove', this.#mouseMoveCallbackReference);
-        window.parent.document.removeEventListener('mouseout', this.#mouseOutCallbackReference);
-        window.parent.document.removeEventListener('touchstart', this.#touchStartCallbackReference);
-        window.parent.document.removeEventListener('touchmove', this.#touchMoveCallbackReference);
-        window.parent.document.removeEventListener('touchend', this.#touchEndCallbackReference);
-        window.parent.document.removeEventListener('wheel', this.#wheelCallbackReference);
-        window.parent.document.removeEventListener('keydown', this.#keyDownCallbackReference);
-        window.parent.document.removeEventListener('keyup', this.#keyUpCallbackReference);
-        window.parent.document.removeEventListener('resize', this.#resizeCallbackReference);
+        window.document.removeEventListener('click', this.#clickCallbackReference);
+        window.document.removeEventListener('mouseup', this.#mouseUpCallbackReference);
+        window.document.removeEventListener('mousedown', this.#mouseDownCallbackReference);
+        window.document.removeEventListener('mousemove', this.#mouseMoveCallbackReference);
+        window.document.removeEventListener('mouseout', this.#mouseOutCallbackReference);
+        window.document.removeEventListener('touchstart', this.#touchStartCallbackReference);
+        window.document.removeEventListener('touchmove', this.#touchMoveCallbackReference);
+        window.document.removeEventListener('touchend', this.#touchEndCallbackReference);
+        window.document.removeEventListener('wheel', this.#wheelCallbackReference);
+        window.document.removeEventListener('keydown', this.#keyDownCallbackReference);
+        window.document.removeEventListener('keyup', this.#keyUpCallbackReference);
+        window.removeEventListener('resize', this.#resizeCallbackReference);
     }
 };
