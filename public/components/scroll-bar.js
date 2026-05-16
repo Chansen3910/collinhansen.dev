@@ -88,7 +88,8 @@ export class ScrollBarElement extends LitElement {
     }
 
     _handleThumbPointerDown(e) {
-        e.preventDefault(); 
+        e.preventDefault();
+        e.stopPropagation();
         e.target.setPointerCapture(e.pointerId);
 
         this.dragging = true;
@@ -100,6 +101,7 @@ export class ScrollBarElement extends LitElement {
     }
 
     _handlePointerMove(e) {
+        e.stopPropagation();
         if(!this.dragging) return;
 
         const { MIN, MAX } = ScrollBarElement;
@@ -114,6 +116,7 @@ export class ScrollBarElement extends LitElement {
     }
 
     _handlePointerUp(e) {
+        e.stopPropagation();
         if(!this.dragging) return;
 
         this.dragging = false;
@@ -122,6 +125,7 @@ export class ScrollBarElement extends LitElement {
     }
 
     _handleTrackClick(e) {
+        e.stopPropagation();
         if(e.target === this.shadowRoot.querySelector('.thumb')) return;
 
         const { MIN, MAX } = ScrollBarElement;
