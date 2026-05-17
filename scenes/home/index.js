@@ -253,9 +253,6 @@ async function sc() {
         },
         "slack-link": function() {
             location.href = 'https://join.slack.com/t/contactcollinhansen/shared_invite/zt-3xr0uv29z-x4iF9EVTp15pWs6rCpXWoQ';
-        },
-        "snapchat-link": function() {
-            location.href = 'https://www.snapchat.com/add/mmisterperfectt';
         }
     };
     controls.setOnClick(function(e) {
@@ -337,10 +334,6 @@ async function sc() {
         },
         "slack-link": function() {
             containerElement.title = `Join my Slack channel`;
-            containerElement.style.setProperty(`cursor`, `pointer`);
-        },
-        "snapchat-link": function() {
-            containerElement.title = `Message me on Snapchat`;
             containerElement.style.setProperty(`cursor`, `pointer`);
         }
     };
