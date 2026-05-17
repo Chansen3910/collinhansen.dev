@@ -226,10 +226,10 @@ async function sc() {
         document.getElementById("ui").appendChild(toast);
     }
     const clickTargets = {
-        "projects-carousel-right": function() {
+        "projects-carousel-right-hitbox": function() {
             projectsFinalPosition -= (2 * (Math.PI / 7));
         },
-        "projects-carousel-left": function() {
+        "projects-carousel-left-hitbox": function() {
             projectsFinalPosition += (2 * (Math.PI / 7));
         },
         "newtube-card": comingSoonToast,
@@ -280,11 +280,11 @@ async function sc() {
         containerElement.title = ``;
     }
     const moveTargets = {
-        "projects-carousel-right": function() {
+        "projects-carousel-right-hitbox": function() {
             containerElement.title = `Send the carousel forward`;
             containerElement.style.setProperty(`cursor`, `pointer`);
         },
-        "projects-carousel-left": function() {
+        "projects-carousel-left-hitbox": function() {
             containerElement.title = `Send the carousel backward`;
             containerElement.style.setProperty(`cursor`, `pointer`);
         },
