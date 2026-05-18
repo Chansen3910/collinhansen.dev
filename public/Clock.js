@@ -138,7 +138,7 @@ export class Clock {
     //ii is the input for the sine wave uniform, defining the shader day night cycle.
     //it is initialized to the current minute of the day / the number of minutes in a full day,
     //multiplied by 2*PI (a full wave cycle)
-    ii = (((CURRENT_GAME_EPOCH.get() % 86400) / 86400) * (2 * Math.PI));
+    ii;
     //iirate is one day night cycle divided by the number of minutes in one day.
     iirate = (2 * Math.PI) / 86400;
 
@@ -149,6 +149,7 @@ export class Clock {
         const now = new Date();
         const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
         CURRENT_GAME_EPOCH.set(Math.floor((now - midnight) / 1000));
+        this.ii = (((CURRENT_GAME_EPOCH.get() % 86400) / 86400) * (2 * Math.PI));
 
         this.renderer = renderer;
         this.scene = scene;
