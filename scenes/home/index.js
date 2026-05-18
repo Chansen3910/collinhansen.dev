@@ -39,7 +39,8 @@ let projects_carousel_left,
 let projectsArmature,
     projectsFinalPosition = 0.0;
 let clock_little_hand,
-    clock_big_hand;
+    clock_big_hand,
+    clock_seconds_hand;
 const CAROUSEL_ROTATION_SPEED = 0.07;
 
 let skill_slot_1,
@@ -88,6 +89,7 @@ async function sc() {
                     if(child.name == `projects-carousel-right`) projects_carousel_right = child;
                     if(child.name == `clock-big-hand`) clock_big_hand = child;
                     if(child.name == `clock-little-hand`) clock_little_hand = child;
+                    if(child.name == `clock-seconds-hand`) clock_seconds_hand = child;
                     /*
                     child.material.side = THREE.DoubleSide;
                     child.geometry.computeBoundingBox();
@@ -134,9 +136,12 @@ async function sc() {
     setCameraZ();
 
     CURRENT_GAME_EPOCH.subscribe(function(value) {
-        console.log(value % 60);
-        clock_big_hand.rotation.z = (Math.PI / 30) * (-(value % 60));
-        clock_little_hand.rotation.z = (Math.PI / 6) * (-(value % 720) / 60);
+        clock_seconds_hand.rotation.z = -(value % 60) * (Math.PI / 30);
+        clock_big_hand.rotation.z = -((value / 60) % 60) * (Math.PI / 30);
+        clock_little_hand.rotation.z = -(((value / 60) / 60) % 12) * (Math.PI / 6);
+
+        //clock_big_hand.rotation.z = (Math.PI / 30) * (-(value % 60));
+        //clock_little_hand.rotation.z = (Math.PI / 6) * (-(value % 720) / 60);
     });
 
     renderer.camera.position.y = CURRENT_SCROLL_POSITION.get();

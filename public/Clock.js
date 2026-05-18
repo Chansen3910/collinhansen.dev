@@ -117,7 +117,7 @@ const cubeCam = new THREE.CubeCamera(1, 1000, cubeRenderTarget);
 cubeCam.position.set(0, 100, 0);
 
 function updateDayNight(totalGameMinutes) {
-    const gameHours = (totalGameMinutes / 60) % 24;
+    const gameHours = (totalGameMinutes / 3600) % 24;
     sky.material.uniforms.uTimeOfDay.value = gameHours;
     
     /*
@@ -134,15 +134,22 @@ export class Clock {
     //ms is the actual ms counter.
     ms = 0;
     //tickRate is the number of milliseconds that comprise one game minute.
-    tickRate = 2000;
+    tickRate = 1000;
     //ii is the input for the sine wave uniform, defining the shader day night cycle.
     //it is initialized to the current minute of the day / the number of minutes in a full day,
     //multiplied by 2*PI (a full wave cycle)
-    ii = (((CURRENT_GAME_EPOCH.get() % 1440) / 1440) * (2 * Math.PI));
+    ii = (((CURRENT_GAME_EPOCH.get() % 86400) / 86400) * (2 * Math.PI));
     //iirate is one day night cycle divided by the number of minutes in one day.
-    iirate = (2 * Math.PI) / 1440;
+    iirate = (2 * Math.PI) / 86400;
 
     constructor(renderer, scene) {
+        const clientTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        console.log(clientTimezone);
+
+        const now = new Date();
+        const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        CURRENT_GAME_EPOCH.set(Math.floor((now - midnight) / 1000));
+
         this.renderer = renderer;
         this.scene = scene;
         this.scene.add(sky);
